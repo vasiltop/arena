@@ -5,7 +5,7 @@ function process(_data) {
 	switch _data[0] {
 		
 		case "Pos":
-			show_debug_message("position send");
+			show_debug_message("position received");
 		break;
 		
 	}
