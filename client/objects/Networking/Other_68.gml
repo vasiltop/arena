@@ -17,8 +17,6 @@ switch (async_load[? "type"]) {
 			
 			process(SnapBufferReadMessagePack(_copied, 0));
 			
-			
-			
 		}
 		
 	break;
