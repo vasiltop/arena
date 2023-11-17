@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic)]
+
 use rmp_serde::Serializer;
 use serde::{Deserialize, Serialize};
 use std::io;
@@ -5,6 +7,7 @@ use tokio::net::TcpListener;
 
 #[derive(Deserialize, Serialize, Debug)]
 struct Position {
+    #[serde(rename = "type")]
     t: String,
     x: i32,
     y: i32,
@@ -17,26 +20,14 @@ async fn main() -> io::Result<()> {
     loop {
         let (socket, _) = listener.accept().await?;
 
-        tokio::spawn(async move {
-            match listen(&socket).await {
-                Ok(_) => println!("Connection processed"),
-                Err(e) => println!("Error processing connection: {}", e),
-            }
-        });
+        tokio::spawn(async move { listen(&socket).await });
     }
 }
 
 async fn send_buf(buf: Vec<u8>, socket: &tokio::net::TcpStream) -> io::Result<()> {
     socket.writable().await?;
 
-    match socket.try_write(buf.as_slice()) {
-        Ok(n) => {
-            println!("{} bytes written", n);
-        }
-        Err(e) => {
-            println!("Error writing to socket: {}", e);
-        }
-    }
+    socket.try_write(buf.as_slice())?;
 
     Ok(())
 }
@@ -48,8 +39,7 @@ async fn listen(socket: &tokio::net::TcpStream) -> io::Result<()> {
         let mut buf = [0; 1024];
         match socket.try_read(&mut buf) {
             Ok(n) => {
-                println!("{} bytes read", n);
-                println!("{:?}", &buf[..n]);
+                handle_packet(&buf, n);
 
                 let pos = Position {
                     t: "Pos".to_string(),
@@ -66,8 +56,23 @@ async fn listen(socket: &tokio::net::TcpStream) -> io::Result<()> {
                 continue;
             }
             Err(e) => {
-                println!("Error reading from socket: {}", e);
+                println!("Error reading from socket: {e}");
             }
         }
     }
+}
+
+fn handle_packet(packet: &[u8; 1024], size: usize) {
+    let packet = &packet[..size];
+    let mut position = 0;
+
+    while position < packet.len() - 1 {
+        let size = usize::from(packet[position]);
+        handle_instruction(&packet[position + 1..=position + size]);
+        position += size + 1;
+    }
+}
+
+fn handle_instruction(packet: &[u8]) {
+    println!("{:?}", rmp_serde::from_slice::<Position>(packet));
 }
