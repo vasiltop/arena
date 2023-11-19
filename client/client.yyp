@@ -44,6 +44,7 @@
     {"id":{"name":"Buffer","path":"scripts/Buffer/Buffer.yy",},},
     {"id":{"name":"Networking","path":"objects/Networking/Networking.yy",},},
     {"id":{"name":"Other","path":"sprites/Other/Other.yy",},},
+    {"id":{"name":"oPlayer","path":"objects/oPlayer/oPlayer.yy",},},
     {"id":{"name":"SnapBufferReadMessagePack","path":"scripts/SnapBufferReadMessagePack/SnapBufferReadMessagePack.yy",},},
     {"id":{"name":"oOther","path":"objects/oOther/oOther.yy",},},
     {"id":{"name":"Self","path":"sprites/Self/Self.yy",},},

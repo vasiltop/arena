@@ -21,6 +21,9 @@ pub enum Packet {
         x: i32,
         y: i32,
     },
+    Disconnect {
+        id: u32,
+    },
 }
 
 pub async fn send_packet(packet: Packet, socket: &tokio::net::TcpStream) -> io::Result<()> {

@@ -31,6 +31,19 @@ function process(_data) {
 			
 		break;
 		
+		case "disconnect": 
+			
+			with (oOther) {
+				
+				if uuid == _data[1] {
+					instance_destroy(self);
+					break;
+				}
+				
+			}
+		
+		break;
+		
 	}
 	
 }

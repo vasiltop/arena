@@ -25,6 +25,7 @@
     {"name":"SnapBufferReadMessagePack_1","order":2,"path":"scripts/SnapBufferReadMessagePack_1/SnapBufferReadMessagePack_1.yy",},
     {"name":"Buffer","order":1,"path":"scripts/Buffer/Buffer.yy",},
     {"name":"Other","order":1,"path":"sprites/Other/Other.yy",},
+    {"name":"oPlayer","order":3,"path":"objects/oPlayer/oPlayer.yy",},
     {"name":"oOther","order":1,"path":"objects/oOther/oOther.yy",},
   ],
 }

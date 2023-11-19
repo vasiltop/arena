@@ -15,9 +15,6 @@ async fn main() -> io::Result<()> {
     let player_data = Arc::new(Mutex::new(HashMap::<u32, PlayerData>::new()));
     let mut current_id = 0;
 
-    //yesterday i left off at the players not joining in the correct position
-    //fix it..
-
     loop {
         let (socket, _) = listener.accept().await?;
 
@@ -37,11 +34,21 @@ async fn main() -> io::Result<()> {
             p.insert(current_id, Arc::clone(&s));
             drop(p);
 
-            let mut p = player_data.lock().await;
-            p.insert(current_id, PlayerData { x: 50, y: 50 });
-            drop(p);
+            let mut pd = player_data.lock().await;
+            pd.insert(current_id, PlayerData { x: 50, y: 50 });
+            drop(pd);
 
             s.listen().await?;
+
+            let mut p = players.lock().await;
+            let mut pd = player_data.lock().await;
+            p.remove(&current_id);
+            pd.remove(&current_id);
+
+            for (_, socket) in p.iter() {
+                packet::send_packet(packet::Packet::Disconnect { id: s.id }, &socket.socket)
+                    .await?;
+            }
 
             Ok::<_, io::Error>(())
         });
