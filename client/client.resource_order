@@ -20,6 +20,11 @@
   ],
   "ResourceOrderSettings": [
     {"name":"SnapBufferWriteMessagePack","order":1,"path":"scripts/SnapBufferWriteMessagePack/SnapBufferWriteMessagePack.yy",},
+    {"name":"SnapBufferWriteMessagePack_1","order":3,"path":"scripts/SnapBufferWriteMessagePack_1/SnapBufferWriteMessagePack_1.yy",},
+    {"name":"oSelf","order":2,"path":"objects/oSelf/oSelf.yy",},
+    {"name":"SnapBufferReadMessagePack_1","order":2,"path":"scripts/SnapBufferReadMessagePack_1/SnapBufferReadMessagePack_1.yy",},
     {"name":"Buffer","order":1,"path":"scripts/Buffer/Buffer.yy",},
+    {"name":"Other","order":1,"path":"sprites/Other/Other.yy",},
+    {"name":"oOther","order":1,"path":"objects/oOther/oOther.yy",},
   ],
 }
