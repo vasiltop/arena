@@ -19,6 +19,6 @@ pub async fn send_packet(packet: Packet, socket: &tokio::net::TcpStream) -> io::
     socket.writable().await?;
     socket.try_write(buf.as_slice())?;
 
-    println!("Sent packet: {packet:?}");
+    //println!("Sent packet: {packet:?}");
     Ok(())
 }

@@ -82,10 +82,10 @@ impl Socket {
     }
 
     async fn handle_instruction(&self, packet: &[u8]) -> Result<(), Error> {
-        println!(
-            "Packet received: {:?}",
-            rmp_serde::from_slice::<packet::Packet>(packet)
-        );
+        //println!(
+        //    "Packet received: {:?}",
+        //    rmp_serde::from_slice::<packet::Packet>(packet)
+        // );
 
         Ok(match rmp_serde::from_slice::<packet::Packet>(packet)? {
             Packet::Pos { id, x, y } => {

@@ -11,7 +11,7 @@ use tokio::sync::Mutex;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    let listener = TcpListener::bind("127.0.0.1:8000").await?;
+    let listener = TcpListener::bind("0.0.0.0:8000").await?;
     let players = Arc::new(Mutex::new(HashMap::<u32, Arc<Socket>>::new()));
 
     let mut current_id = 0;
@@ -49,7 +49,7 @@ async fn main() -> io::Result<()> {
 
             Ok::<_, io::Error>(())
         });
-
+        println!("New connection: {}", current_id);
         current_id += 1;
     }
 }
