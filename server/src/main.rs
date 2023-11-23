@@ -43,10 +43,9 @@ async fn main() -> io::Result<()> {
             let mut p = players.lock().await;
             p.remove(&current_id);
 
-            for (_, socket) in p.iter() {
-                packet::send_packet(packet::Packet::Disconnect { id: socket.id }, &socket.socket)
-                    .await?;
-            }
+            socket
+                .send_to_all(packet::Packet::Disconnect { id: socket.id }, &p)
+                .await?;
 
             Ok::<_, io::Error>(())
         });
