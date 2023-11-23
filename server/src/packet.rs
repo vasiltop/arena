@@ -2,28 +2,12 @@ use rmp_serde::Serializer;
 use serde::{Deserialize, Serialize};
 use std::io;
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Copy, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Packet {
-    Input {
-        up: bool,
-        down: bool,
-        left: bool,
-        right: bool,
-    },
-    Position {
-        id: u32,
-        x: i32,
-        y: i32,
-    },
-    Initialize {
-        id: u32,
-        x: i32,
-        y: i32,
-    },
-    Disconnect {
-        id: u32,
-    },
+    Init { id: u32 },
+    Pos { id: u32, x: i32, y: i32 },
+    Disconnect { id: u32 },
 }
 
 pub async fn send_packet(packet: Packet, socket: &tokio::net::TcpStream) -> io::Result<()> {

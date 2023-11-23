@@ -1,4 +1,4 @@
-use crate::packet;
+use crate::packet::{self, send_packet, Packet};
 use rmp_serde::decode::Error;
 use std::{collections::HashMap, io, sync::Arc};
 use tokio::net::TcpStream;
@@ -15,63 +15,26 @@ pub struct Socket {
     pub id: u32,
     pub socket: TcpStream,
     pub players: Arc<Mutex<HashMap<u32, Arc<Socket>>>>,
-    pub player_data: Arc<Mutex<HashMap<u32, PlayerData>>>,
 }
 
 impl Socket {
+    pub async fn send_to_all_except_self(
+        &self,
+        packet: packet::Packet,
+        p: &HashMap<u32, Arc<Socket>>,
+    ) -> io::Result<()> {
+        for (id, socket) in p.iter() {
+            if *id == self.id {
+                continue;
+            }
+
+            packet::send_packet(packet, &socket.socket).await?;
+        }
+
+        Ok(())
+    }
+
     pub async fn listen(&self) -> io::Result<()> {
-        self.socket.writable().await?;
-        let pd = self.player_data.lock().await;
-        //Set the current sockets position
-        packet::send_packet(
-            packet::Packet::Initialize {
-                id: self.id,
-                x: pd.get(&self.id).unwrap().x,
-                y: pd.get(&self.id).unwrap().y,
-            },
-            &self.socket,
-        )
-        .await?;
-
-        let p = self.players.lock().await;
-
-        //Set other sockets positions
-        for (id, socket) in p.iter() {
-            println!("{id:?} {:?}", self.id);
-            if *id == self.id {
-                continue;
-            }
-
-            packet::send_packet(
-                packet::Packet::Position {
-                    id: socket.id,
-                    x: pd.get(&socket.id).unwrap().x,
-                    y: pd.get(&socket.id).unwrap().y,
-                },
-                &self.socket,
-            )
-            .await?;
-        }
-
-        //Send the current sockets position to other sockets
-        for (id, socket) in p.iter() {
-            if *id == self.id {
-                continue;
-            }
-
-            packet::send_packet(
-                packet::Packet::Position {
-                    id: self.id,
-                    x: pd.get(&self.id).unwrap().x,
-                    y: pd.get(&self.id).unwrap().y,
-                },
-                &socket.socket,
-            )
-            .await?;
-        }
-
-        drop(p);
-        drop(pd);
         loop {
             self.socket.readable().await?;
 
@@ -99,7 +62,6 @@ impl Socket {
 
         while position < packet.len() - 1 {
             let size = usize::from(packet[position]);
-            println!("Size: {size}");
             self.handle_instruction(&packet[position + 1..=position + size])
                 .await
                 .ok();
@@ -114,51 +76,15 @@ impl Socket {
         );
 
         Ok(match rmp_serde::from_slice::<packet::Packet>(packet)? {
-            packet::Packet::Input {
-                up,
-                down,
-                left,
-                right,
-            } => {
-                let mut pd = self.player_data.lock().await;
-                let data = pd.get_mut(&self.id).unwrap();
-
-                if up {
-                    data.y -= 5;
-                }
-
-                if down {
-                    data.y += 5;
-                }
-
-                if left {
-                    data.x -= 5;
-                }
-
-                if right {
-                    data.x += 5;
-                }
-
+            Packet::Pos { id, x, y } => {
                 let p = self.players.lock().await;
+                let socket = p.get(&id).unwrap();
 
-                for (id, socket) in p.iter() {
-                    if *id == self.id {
-                        continue;
-                    }
-
-                    packet::send_packet(
-                        packet::Packet::Position {
-                            id: self.id,
-                            x: data.x,
-                            y: data.y,
-                        },
-                        &socket.socket,
-                    )
+                socket
+                    .send_to_all_except_self(Packet::Pos { id, x, y }, &p)
                     .await
                     .ok();
-                }
             }
-
             _ => {}
         })
     }
