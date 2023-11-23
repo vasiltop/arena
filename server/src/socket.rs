@@ -34,6 +34,18 @@ impl Socket {
         Ok(())
     }
 
+    pub async fn send_to_all(
+        &self,
+        packet: packet::Packet,
+        p: &HashMap<u32, Arc<Socket>>,
+    ) -> io::Result<()> {
+        for (_, socket) in p.iter() {
+            packet::send_packet(packet, &socket.socket).await?;
+        }
+
+        Ok(())
+    }
+
     pub async fn listen(&self) -> io::Result<()> {
         loop {
             self.socket.readable().await?;

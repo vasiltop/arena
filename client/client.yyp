@@ -38,9 +38,7 @@
   "resources": [
     {"id":{"name":"Network","path":"scripts/Network/Network.yy",},},
     {"id":{"name":"SnapBufferWriteMessagePack","path":"scripts/SnapBufferWriteMessagePack/SnapBufferWriteMessagePack.yy",},},
-    {"id":{"name":"SnapBufferWriteMessagePack_1","path":"scripts/SnapBufferWriteMessagePack_1/SnapBufferWriteMessagePack_1.yy",},},
     {"id":{"name":"oSelf","path":"objects/oSelf/oSelf.yy",},},
-    {"id":{"name":"SnapBufferReadMessagePack_1","path":"scripts/SnapBufferReadMessagePack_1/SnapBufferReadMessagePack_1.yy",},},
     {"id":{"name":"Buffer","path":"scripts/Buffer/Buffer.yy",},},
     {"id":{"name":"Networking","path":"objects/Networking/Networking.yy",},},
     {"id":{"name":"Other","path":"sprites/Other/Other.yy",},},

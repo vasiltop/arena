@@ -4,12 +4,20 @@ function process(_data) {
 	
 	switch _data[0] {
 		
-		case "initialize":
-			var player = instance_create_layer(_data[2], _data[3], "Instances", oSelf);
-			player.uuid = _data[1];
+		case "init":
+			
+			with(instance_create_layer(50, 50, "Instances", oSelf)) {
+				uuid = _data[1];	
+				send({ type: "pos", x: x, y: y, id: uuid});
+			}
+			
+			
+			
+		
 		break;
 		
-		case "position":
+		
+		case "pos":
 			
 			var exists = false;
 			
@@ -26,6 +34,7 @@ function process(_data) {
 				
 				var player = instance_create_layer(_data[2], _data[3], "Instances", oOther);
 				player.uuid = _data[1];
+				send({ type: "pos", x: oSelf.x, y: oSelf.y, id: oSelf.uuid});
 			}
 			
 			
