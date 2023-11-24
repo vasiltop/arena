@@ -82,10 +82,10 @@ impl Socket {
     }
 
     async fn handle_instruction(&self, packet: &[u8]) -> Result<(), Error> {
-        //println!(
-        //    "Packet received: {:?}",
-        //    rmp_serde::from_slice::<packet::Packet>(packet)
-        // );
+        println!(
+            "Packet received: {:?}",
+            rmp_serde::from_slice::<packet::Packet>(packet)
+        );
 
         Ok(match rmp_serde::from_slice::<packet::Packet>(packet)? {
             Packet::Pos { id, x, y } => {
@@ -96,6 +96,49 @@ impl Socket {
                     .send_to_all_except_self(Packet::Pos { id, x, y }, &p)
                     .await
                     .ok();
+            }
+
+            Packet::Sprite { id, sprite } => {
+                let p = self.players.lock().await;
+                let socket = p.get(&id).unwrap();
+
+                socket
+                    .send_to_all_except_self(Packet::Sprite { id, sprite }, &p)
+                    .await
+                    .ok();
+            }
+            Packet::Dir { id, dir, x_scale } => {
+                let p = self.players.lock().await;
+                let socket = p.get(&id).unwrap();
+
+                socket
+                    .send_to_all_except_self(Packet::Dir { id, dir, x_scale }, &p)
+                    .await
+                    .ok();
+            }
+            Packet::Shot { id } => {
+                let p = self.players.lock().await;
+                let socket = p.get(&id).unwrap();
+
+                socket
+                    .send_to_all_except_self(Packet::Shot { id }, &p)
+                    .await
+                    .ok();
+            }
+            Packet::Dmg { id, amount } => {
+                let p = self.players.lock().await;
+                let socket = p.get(&id).unwrap();
+
+                socket
+                    .send_to_all(Packet::Dmg { id, amount }, &p)
+                    .await
+                    .ok();
+            }
+            Packet::Death { id } => {
+                let p = self.players.lock().await;
+                let socket = p.get(&id).unwrap();
+
+                socket.send_to_all(Packet::Death { id }, &p).await.ok();
             }
             _ => {}
         })

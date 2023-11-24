@@ -7,12 +7,15 @@ if (keyboard_check_pressed(vk_enter)) {
 		stage++;
 	} else {
 		port = keyboard_string;
+		
+		room_goto(rm_game);
+
 		with instance_create_layer(0,0,"Instances", obj_network) {
 			socket = network_create_socket(network_socket_tcp);
 			network_connect_raw(socket, other.ip, int64(other.port)); 
 		}
 		
-		room_goto(rm_outside);
+		
 		
 	}
 
