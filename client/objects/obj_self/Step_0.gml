@@ -45,17 +45,19 @@ image_xscale = -sign(x - mouse_x);
 
 
 if mouse_check_button_pressed(mb_left) {
+	audio_play_sound(snd_shoot, 1, false, 1);
 	send({ type: "shot", id: obj_self.uuid});
 	var _b = instance_create_layer(x, y, "Instances", obj_tracer);
 	_b.dir = aim_direction;
 	_b.image_angle = aim_direction;
-	var _col = collision_line(x, y - 4, mouse_x, mouse_y, obj_other, false, true);
+	var _col = collision_line(x, y - 4, mouse_x + lengthdir_x(1000, aim_direction), mouse_y +  + lengthdir_y(1000, aim_direction), obj_other, false, true);
+	
 	if  _col != noone {
-		
 		if _col.hp <= 0 {
 			send({ type: "death", id: _col.uuid });
 		} else {
 			send({ type: "dmg", id: _col.uuid, amount: 50 });
 		}
 	}
+	
 }

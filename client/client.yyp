@@ -43,6 +43,7 @@
     {"id":{"name":"Network","path":"scripts/Network/Network.yy",},},
     {"id":{"name":"SnapBufferWriteMessagePack","path":"scripts/SnapBufferWriteMessagePack/SnapBufferWriteMessagePack.yy",},},
     {"id":{"name":"spr_player_run","path":"sprites/spr_player_run/spr_player_run.yy",},},
+    {"id":{"name":"snd_shoot","path":"sounds/snd_shoot/snd_shoot.yy",},},
     {"id":{"name":"obj_menu","path":"objects/obj_menu/obj_menu.yy",},},
     {"id":{"name":"obj_self","path":"objects/obj_self/obj_self.yy",},},
     {"id":{"name":"spr_tracer","path":"sprites/spr_tracer/spr_tracer.yy",},},
