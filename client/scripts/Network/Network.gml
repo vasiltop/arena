@@ -1,3 +1,6 @@
+#macro RAND_X random_range(16, room_width - 16)
+#macro RAND_Y random_range(16, room_height - 16)
+
 function process(_data) {
 	
 	//show_debug_message("Received: ");
@@ -6,13 +9,12 @@ function process(_data) {
 	switch _data[0] {
 		
 		case "init":
+			var _pos = new_spawn_pos();
+			var _p = instance_create_layer(_pos.x, _pos.y, "Instances", obj_self);
 			
-			var _p = instance_create_layer(50, 50, "Instances", obj_self);
-			
-			_p.uuid = _data[1];	
+			_p.uuid = _data[1];
 			send({ type: "pos", x: x, y: y, id: _data[1]});
 			ds_map_add(players, _data[1], _p);
-			
 
 		break;
 		
@@ -38,6 +40,7 @@ function process(_data) {
 			
 			var _p = ds_map_find_value(players, _data[1]);
 			if !is_undefined(_p) and instance_exists(_p) {
+				ds_map_delete(players, _p.uuid);
 				instance_destroy(_p);
 			}
 		
@@ -63,42 +66,69 @@ function process(_data) {
 		break;
 		
 		case "shot":
+		
+		
 			var _p = ds_map_find_value(players, _data[1]);
+			
 			if !is_undefined(_p) and instance_exists(_p) {
 				var _b = instance_create_layer(_p.x, _p.y, "Instances", obj_tracer);
 				_b.dir = _p.aim_direction;
 				_b.image_angle = _p.aim_direction;
 				
-				var _dist = point_distance(obj_self.x, obj_self.y, _p.x, _p.y);
+				var _dist = point_distance(obj_camera.x, obj_camera.y, _p.x, _p.y);
 				
 				audio_play_sound(snd_shoot, 1, false, 1 - (_dist / 500));
 			}
+	
 			
 		break;
 		
 		case "death":
+		
 			var _p = ds_map_find_value(players, _data[1]);
+			
 			if !is_undefined(_p) and instance_exists(_p) {
 				
 				ds_map_delete(players, _p.uuid);
 				
-				if _p.uuid == obj_self.uuid {
+				if !instance_exists(obj_respawn_menu) and _p.uuid == obj_self.uuid {
 					var _m = instance_create_layer(obj_self.x, obj_self.y, "Instances", obj_respawn_menu);
 					_m.uuid = _p.uuid;
-					obj_camera.follow = _m;
-				} 
-				
+				}
+
 				instance_destroy(_p);
 			}
+			
+			if !instance_exists(obj_self) {
+				var _rand = irandom(ds_map_size(players));
+				
+				var _key = ds_map_find_first(players);
+					
+				repeat(_rand){
+					if ds_map_find_next(players, _key) != undefined {
+						_key = ds_map_find_next(players, _key);
+					}
+				}
+	
+				obj_respawn_menu.spectating = _key;
+				
+			}
+
 		break;
 		
 		case "dmg":
 		
+				var _p = ds_map_find_value(players, _data[1]);
+				if !is_undefined(_p) and instance_exists(_p) {
+					_p.hp -= _data[2];
+					
+					
+					if _p.hp <= 0 {
+						
+						send({ type: "death", id: _p.uuid });
+					}
+				}
 			
-			var _p = ds_map_find_value(players, _data[1]);
-			if !is_undefined(_p) and instance_exists(_p) {
-				_p.hp -= _data[2];
-			}
 		break;
 		
 	}

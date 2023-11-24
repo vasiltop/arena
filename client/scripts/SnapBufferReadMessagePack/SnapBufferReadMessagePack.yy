@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "MessagePack",
-    "path": "folders/SNAP/MessagePack.yy",
+    "path": "folders/Scripts/MessagePack.yy",
   },
 }
