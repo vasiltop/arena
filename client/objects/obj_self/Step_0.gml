@@ -63,11 +63,19 @@ if mouse_check_button_pressed(mb_left) and alarm[0] <= 0 {
 	_b.dir = aim_direction;
 	_b.image_angle = aim_direction;
 	
-	var _wall = collision_line(x, y - 4, mouse_x + lengthdir_x(1000, aim_direction), mouse_y +  + lengthdir_y(1000, aim_direction), obj_col, false, true);
-	var _col = collision_line(x, y - 4, mouse_x + lengthdir_x(1000, aim_direction), mouse_y +  + lengthdir_y(1000, aim_direction), obj_other, false, true);
+	var _l = ds_list_create();
+	collision_line_list(x, y - 4, mouse_x + lengthdir_x(300, aim_direction), mouse_y +  + lengthdir_y(300, aim_direction), obj_col, false, true, _l, true);
 	
-	if  _col != noone and point_distance(x, y, _wall.x, _wall.y) > point_distance(x, y, _col.x, _col.y) {
-		send({ type: "dmg", id: _col.uuid, amount: 75 });
+	var _wall = ds_list_find_value(_l, 0);
+	
+	
+	var _ps = ds_list_create();
+	collision_line_list(x, y - 4, mouse_x + lengthdir_x(300, aim_direction), mouse_y +  + lengthdir_y(300, aim_direction), obj_other, false, true, _ps, true);
+	
+	var _player = ds_list_find_value(_ps, 0);
+	
+	if  !is_undefined(_player) and (is_undefined(_wall) or point_distance(x, y, _wall.x, _wall.y) > point_distance(x, y, _player.x, _player.y) )  {
+		
+		send({ type: "dmg", id: _player.uuid, amount: 75 });
 	}
-	
 }

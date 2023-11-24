@@ -11,6 +11,7 @@
     {"name":"rm_menu","order":1,"path":"rooms/rm_menu/rm_menu.yy",},
     {"name":"obj_respawn_menu","order":7,"path":"objects/obj_respawn_menu/obj_respawn_menu.yy",},
     {"name":"obj_camera","order":5,"path":"objects/obj_camera/obj_camera.yy",},
+    {"name":"spr_crosshair","order":9,"path":"sprites/spr_crosshair/spr_crosshair.yy",},
     {"name":"SnapBufferWriteMessagePack","order":1,"path":"scripts/SnapBufferWriteMessagePack/SnapBufferWriteMessagePack.yy",},
     {"name":"spr_player_run","order":3,"path":"sprites/spr_player_run/spr_player_run.yy",},
     {"name":"obj_menu","order":4,"path":"objects/obj_menu/obj_menu.yy",},
