@@ -1,7 +1,7 @@
 function process(_data) {
 	
-	show_debug_message("Received: ");
-	show_debug_message(_data);
+	//show_debug_message("Received: ");
+	//show_debug_message(_data);
 	
 	switch _data[0] {
 		
@@ -26,7 +26,11 @@ function process(_data) {
 				_p.y = _data[3];
 			} else {
 				var _player = instance_create_layer(_data[2], _data[3], "Instances", obj_other);
+				
+				
 				ds_map_add(players, _data[1], _player);
+				
+				
 				_player.uuid = _data[1];
 				send({ type: "pos", x: obj_self.x, y: obj_self.y, id: obj_self.uuid});
 			}
@@ -66,6 +70,7 @@ function process(_data) {
 			if instance_exists(_p) {
 				var _b = instance_create_layer(_p.x, _p.y, "Instances", obj_tracer);
 				_b.dir = _p.aim_direction;
+				_b.image_angle = _p.aim_direction;
 			}
 			
 		break;
@@ -73,13 +78,38 @@ function process(_data) {
 		case "death":
 			var _p = ds_map_find_value(players, _data[1]);
 			if instance_exists(_p) {
+				
+				
+				show_debug_message(_p.uuid);
+				show_debug_message(obj_self.uuid);
+				show_debug_message("---------------------");
+				ds_map_delete(players, _p.uuid);
+				
+				if _p.uuid == obj_self.uuid {
+					var _m = instance_create_layer(obj_self.x, obj_self.y, "Instances", obj_respawn_menu);
+					_m.uuid = _p.uuid;
+					obj_camera.follow = _m;
+				} 
+				
 				instance_destroy(_p);
 			}
 		break;
 		
 		case "dmg":
+		
+			show_debug_message("received to id " + string(_data[1]));
+			show_debug_message("my id is " + string(obj_self.uuid));
 			var _p = ds_map_find_value(players, _data[1]);
+			show_debug_message(instance_exists(_p));
+			show_debug_message(_p);
+			show_debug_message("-------------");
+			
 			if instance_exists(_p) {
+				
+				show_debug_message(_p.uuid);
+				show_debug_message(obj_self.uuid);
+				show_debug_message("---------------------");
+				
 				_p.hp -= _data[2];
 			}
 		break;

@@ -21,6 +21,7 @@
   "ResourceOrderSettings": [
     {"name":"spr_pistol","order":4,"path":"sprites/spr_pistol/spr_pistol.yy",},
     {"name":"rm_menu","order":1,"path":"rooms/rm_menu/rm_menu.yy",},
+    {"name":"obj_respawn_menu","order":7,"path":"objects/obj_respawn_menu/obj_respawn_menu.yy",},
     {"name":"obj_camera","order":5,"path":"objects/obj_camera/obj_camera.yy",},
     {"name":"SnapBufferWriteMessagePack","order":1,"path":"scripts/SnapBufferWriteMessagePack/SnapBufferWriteMessagePack.yy",},
     {"name":"spr_player_run","order":3,"path":"sprites/spr_player_run/spr_player_run.yy",},

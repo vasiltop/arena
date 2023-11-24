@@ -14,7 +14,7 @@ switch (async_load[? "type"]) {
 			var _copied = buffer_create(_length, buffer_grow, 1);
 			buffer_copy(_read, buffer_tell(_read), _length, _copied, 0);
 			buffer_seek(_read, buffer_seek_relative, _length);
-			show_debug_message("test");
+			
 			process(SnapBufferReadMessagePack(_copied, 0));
 			
 		}

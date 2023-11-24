@@ -55,7 +55,7 @@ if mouse_check_button_pressed(mb_left) {
 		if _col.hp <= 0 {
 			send({ type: "death", id: _col.uuid });
 		} else {
-			send({ type: "dmg", id: _col.uuid, amount: 5 });
+			send({ type: "dmg", id: _col.uuid, amount: 50 });
 		}
 	}
 }

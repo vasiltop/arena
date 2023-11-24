@@ -38,6 +38,7 @@
   "resources": [
     {"id":{"name":"spr_pistol","path":"sprites/spr_pistol/spr_pistol.yy",},},
     {"id":{"name":"rm_menu","path":"rooms/rm_menu/rm_menu.yy",},},
+    {"id":{"name":"obj_respawn_menu","path":"objects/obj_respawn_menu/obj_respawn_menu.yy",},},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},
     {"id":{"name":"Network","path":"scripts/Network/Network.yy",},},
     {"id":{"name":"SnapBufferWriteMessagePack","path":"scripts/SnapBufferWriteMessagePack/SnapBufferWriteMessagePack.yy",},},
