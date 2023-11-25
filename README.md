@@ -13,4 +13,8 @@ To host a server for Arena, you must download the server executable from the off
 > server 0.0.0.0 8000
 ```
 
+## Official Server
+
+The official server for arena is hosted on arena.vasiltopalovic.com on port 8001.
+
 ![Screenshot of game](./images/screenshot.png)
