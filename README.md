@@ -9,7 +9,7 @@ To host a server for Arena, you must download the server executable from the off
 ```bash
 > server [ip] [port]
 
-#example
+# for example
 > server 0.0.0.0 8000
 ```
 
