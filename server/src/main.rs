@@ -3,15 +3,24 @@
 mod packet;
 mod socket;
 
+use clap::Parser;
 use packet::{send_packet, Packet};
-use socket::{PlayerData, Socket};
+use socket::Socket;
 use std::{collections::HashMap, io, sync::Arc};
 use tokio::net::TcpListener;
 use tokio::sync::Mutex;
 
+#[derive(Debug, Parser)]
+struct Args {
+    ip: String,
+    port: String,
+}
+
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    let listener = TcpListener::bind("0.0.0.0:8000").await?;
+    let args = Args::parse();
+
+    let listener = TcpListener::bind(args.ip + ":" + &args.port).await?;
     let players = Arc::new(Mutex::new(HashMap::<u32, Arc<Socket>>::new()));
 
     let mut current_id = 0;

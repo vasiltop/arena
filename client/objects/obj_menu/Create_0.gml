@@ -1,12 +1,12 @@
 text = "";
 stage = 0;
-placeholder = "enter ip";
+placeholder = "Enter the ip you \n would like to join:";
 
 ip = "";
 port = "";
 
 
-
+/*
 room_goto(rm_game);
 
 with instance_create_layer(0,0,"Instances", obj_network) {

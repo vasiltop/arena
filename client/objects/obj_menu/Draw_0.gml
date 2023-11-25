@@ -3,7 +3,7 @@ if (keyboard_check_pressed(vk_enter)) {
 	if stage == 0 {
 		ip = keyboard_string;
 		keyboard_string = "";
-		placeholder = "enter port";
+		placeholder = "Enter the server port: ";
 		stage++;
 	} else {
 		port = keyboard_string;
@@ -26,4 +26,4 @@ var _t = text;
 if string_length(_t) == 0 {
 	_t = placeholder;
 }
-draw_text(50, 50, _t);
+draw_text(30, 40, _t);

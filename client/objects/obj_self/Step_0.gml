@@ -58,7 +58,7 @@ if mouse_check_button_pressed(mb_left) and alarm[0] <= 0 {
 	alarm[0] = 15;
 	audio_play_sound(snd_shoot, 1, false, 1);
 	send({ type: "shot", id: obj_self.uuid});
-	show_debug_message("shot");
+	
 	var _b = instance_create_layer(x, y, "Instances", obj_tracer);
 	_b.dir = aim_direction;
 	_b.image_angle = aim_direction;
