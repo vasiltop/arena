@@ -74,6 +74,11 @@ impl Socket {
 
         while position < packet.len() - 1 {
             let size = usize::from(packet[position]);
+
+            if position + size + 1 > packet.len() {
+                break;
+            }
+
             self.handle_instruction(&packet[position + 1..=position + size])
                 .await
                 .ok();
