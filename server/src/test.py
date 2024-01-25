@@ -1,0 +1,1 @@
+# function that finds the pth factor of a number using a sieve
